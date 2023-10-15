@@ -35,8 +35,8 @@ function HomeScreen({ navigation }) {
           onPress={() => navigation.navigate('Pedido')}
         >
           <View style={[styles.square, styles.greenBackground]}>
-            <Ionicons name="cart" size={64} color="white" />
             <Text style={styles.itemText}>Pedido</Text>
+            <Ionicons name="cart" size={64} color="white" />
           </View>
         </TouchableOpacity>
       </View>
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'blue',
     padding: 20,
     width: '100%',
-    marginBottom: 20, // Ajuste o marginBottom para mover o azul para cima
+    marginBottom: 5,
   },
   headerText: {
     fontSize: 24,
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   greenBackground: {
-    backgroundColor: 'green',
+    backgroundColor: 'lime',
   },
   blueBackground: {
     backgroundColor: 'blue',

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, FlatList, StyleSheet } from 'react-native';
+import { View, Text, TextInput, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons'; // Importe o ícone da biblioteca
 
 function EstoqueScreen() {
   const [medicamentos, setMedicamentos] = useState([]);
@@ -38,7 +39,9 @@ function EstoqueScreen() {
             onChangeText={(text) => setQuantidade(text)}
           />
         </View>
-        <Button title="Adicionar Medicamento" onPress={adicionarMedicamento} />
+        <TouchableOpacity style={styles.addButton} onPress={adicionarMedicamento}>
+          <Text style={styles.addButtonText}>Adicionar Medicamento</Text>
+        </TouchableOpacity>
       </View>
       <FlatList
         data={medicamentos}
@@ -46,7 +49,14 @@ function EstoqueScreen() {
         renderItem={({ item }) => (
           <View style={styles.medicamentoItem}>
             <Text>{item.nome} - Quantidade: {item.quantidade}</Text>
-            <Button title="Excluir" onPress={() => excluirMedicamento(item)} />
+            <TouchableOpacity onPress={() => excluirMedicamento(item)}>
+              <MaterialIcons
+                name="delete"
+                size={24}
+                color="black"
+                style={styles.deleteIcon}
+              />
+            </TouchableOpacity>
           </View>
         )}
       />
@@ -71,20 +81,39 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   input: {
-    flex: 1, // Para dividir igualmente o espaço
+    flex: 1,
     height: 40,
     borderWidth: 1,
     borderColor: 'gray',
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 10,
-    marginRight: 10, // Adiciona um espaço entre os campos de entrada
+    marginRight: 10,
+  },
+  addButton: {
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
+  },
+  addButtonText: {
+    color: 'white',
+    textAlign: 'center',
   },
   medicamentoItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 10,
+  },
+  deleteIcon: {
+    backgroundColor: 'transparent',
+    width: 24,
+    height: 24,
+    borderWidth: 1,
+    borderColor: 'black',
+    borderRadius: 5,
+    textAlign: 'center',
+    textAlignVertical: 'center',
   },
 });
 
