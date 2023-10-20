@@ -14,7 +14,7 @@ function HomeScreen({ navigation }) {
           style={styles.itemContainer}
           onPress={() => navigation.navigate('Estoque')}
         >
-          <View style={[styles.square, styles.greenBackground]}>
+          <View style={[styles.square, styles.darkGreenBackground]}>
             <Ionicons name="cube" size={64} color="white" />
             <Text style={styles.itemText}>Estoque de Medicamentos</Text>
           </View>
@@ -34,7 +34,7 @@ function HomeScreen({ navigation }) {
           style={styles.itemContainer}
           onPress={() => navigation.navigate('Pedido')}
         >
-          <View style={[styles.square, styles.greenBackground]}>
+          <View style={[styles.square, styles.darkGreenBackground]}>
             <Text style={styles.itemText}>Pedido</Text>
             <Ionicons name="cart" size={64} color="white" />
           </View>
@@ -82,8 +82,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  greenBackground: {
-    backgroundColor: 'lime',
+  darkGreenBackground: {
+    backgroundColor: 'darkgreen',
   },
   blueBackground: {
     backgroundColor: 'blue',
@@ -107,3 +107,4 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
+
