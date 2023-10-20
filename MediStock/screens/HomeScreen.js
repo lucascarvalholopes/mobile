@@ -1,15 +1,16 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+
+const plataforma = Platform.OS;
 
 function HomeScreen({ navigation }) {
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: 'blue', justifyContent: "center", alignItems: "center"}}>
         <Text style={styles.headerText}>MediStock</Text>
       </View>
-
-      <View style={styles.content}>
+      <View style={{ flex: 8, flexDirection: plataforma === "web" ? "row" : "column", justifyContent: "center", alignItems: "center", flexWrap: plataforma === "web" ? "wrap" : undefined, gap: 10, padding: 20 }}>
         <TouchableOpacity
           style={styles.itemContainer}
           onPress={() => navigation.navigate('Estoque')}
@@ -19,7 +20,6 @@ function HomeScreen({ navigation }) {
             <Text style={styles.itemText}>Estoque de Medicamentos</Text>
           </View>
         </TouchableOpacity>
-
         <TouchableOpacity
           style={styles.itemContainer}
           onPress={() => navigation.navigate('EditorProduto')}
@@ -29,19 +29,17 @@ function HomeScreen({ navigation }) {
             <Text style={styles.itemText}>Editor de Produto</Text>
           </View>
         </TouchableOpacity>
-
         <TouchableOpacity
           style={styles.itemContainer}
           onPress={() => navigation.navigate('Pedido')}
         >
           <View style={[styles.square, styles.darkGreenBackground]}>
-            <Text style={styles.itemText}>Pedido</Text>
             <Ionicons name="cart" size={64} color="white" />
+            <Text style={styles.itemText}>Pedido</Text>
           </View>
         </TouchableOpacity>
       </View>
-
-      <View style={styles.footer}>
+      <View style={{ flex: 1, backgroundColor: 'blue', justifyContent: "center", alignItems: "center" }}>
         <Text style={styles.footerText}>MediStock</Text>
       </View>
     </View>
@@ -72,8 +70,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   itemContainer: {
-    alignItems: 'center',
-    margin: 10,
+    // alignSelf: "center",
+    // alignItems: 'center',
   },
   square: {
     width: 160,
@@ -107,4 +105,3 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
-
