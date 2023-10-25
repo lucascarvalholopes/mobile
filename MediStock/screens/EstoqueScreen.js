@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons'; // Importe o ícone da biblioteca
+import { useNavigation } from '@react-navigation/native'; // Importe o hook de navegação
 
 function EstoqueScreen() {
   const [medicamentos, setMedicamentos] = useState([]);
   const [novoMedicamento, setNovoMedicamento] = useState('');
   const [quantidade, setQuantidade] = useState('');
+  const navigation = useNavigation(); // Obtenha o objeto de navegação
 
   const adicionarMedicamento = () => {
     if (novoMedicamento && quantidade) {
@@ -21,9 +23,16 @@ function EstoqueScreen() {
     setMedicamentos(novaLista);
   };
 
+  const navigateToEditor = () => {
+    navigation.navigate('EditorProduto'); // Certifique-se de que o nome da tela de edição de produto é 'EditorProduto'
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Estoque de Medicamentos</Text>
+      <TouchableOpacity onPress={navigateToEditor} style={styles.addButton}>
+        <Text style={styles.addButtonText}>Add</Text>
+      </TouchableOpacity>
       <View style={styles.form}>
         <View style={styles.inputContainer}>
           <TextInput
@@ -73,6 +82,16 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
   },
+  addButton: {
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  addButtonText: {
+    color: 'white',
+    textAlign: 'center',
+  },
   form: {
     marginVertical: 20,
   },
@@ -89,15 +108,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 10,
     marginRight: 10,
-  },
-  addButton: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-  },
-  addButtonText: {
-    color: 'white',
-    textAlign: 'center',
   },
   medicamentoItem: {
     flexDirection: 'row',
