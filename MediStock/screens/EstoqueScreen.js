@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image, Modal, TextInput } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function EstoqueScreen({ route }) {
   const [medicamentos, setMedicamentos] = useState([]);
@@ -11,18 +12,31 @@ function EstoqueScreen({ route }) {
   const navigation = useNavigation();
 
   useEffect(() => {
-    if (route.params && route.params.novoMedicamento) {
-      const { nome, quantidade, photoUri } = route.params.novoMedicamento;
-      if (nome && quantidade) {
-        const novoItem = {
-          nome: nome,
-          quantidade: quantidade,
-          photoUri: photoUri,
-        };
-        setMedicamentos([...medicamentos, novoItem]);
+    const loadMedicamentos = async () => {
+      try {
+        const medicamentosJSON = await AsyncStorage.getItem('medicamentos');
+        if (medicamentosJSON) {
+          setMedicamentos(JSON.parse(medicamentosJSON));
+        }
+      } catch (error) {
+        console.error('Erro ao carregar medicamentos do AsyncStorage:', error);
       }
-    }
+    };
+
+    loadMedicamentos();
   }, [route.params]);
+
+  const saveMedicamentosToStorage = async () => {
+    try {
+      await AsyncStorage.setItem('medicamentos', JSON.stringify(medicamentos));
+    } catch (error) {
+      console.error('Erro ao salvar medicamentos no AsyncStorage:', error);
+    }
+  };
+
+  useEffect(() => {
+    saveMedicamentosToStorage();
+  }, [medicamentos]);
 
   const excluirMedicamento = (item) => {
     const novaLista = medicamentos.filter((med) => med !== item);
@@ -174,6 +188,3 @@ const styles = StyleSheet.create({
 });
 
 export default EstoqueScreen;
-
-
-

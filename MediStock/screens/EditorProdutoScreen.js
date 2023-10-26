@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Modal, Image, TextInput } fro
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Camera } from "expo-camera";
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function EditorProdutoScreen({ route }) {
   const [hasPermission, setHasPermission] = useState(null);
@@ -28,8 +29,24 @@ function EditorProdutoScreen({ route }) {
     }
   };
 
-  const adicionarMedicamento = () => {
+  const adicionarMedicamento = async () => {
     if (nomeMedicamento && quantidadeMedicamento) {
+      // Recuperar a lista de medicamentos existente
+      const medicamentos = await AsyncStorage.getItem('medicamentos');
+      let medicamentosArray = [];
+      if (medicamentos) {
+        medicamentosArray = JSON.parse(medicamentos);
+      }
+      // Adicionar o novo medicamento à lista
+      medicamentosArray.push({
+        nome: nomeMedicamento,
+        quantidade: quantidadeMedicamento,
+        photoUri: photo,
+      });
+      // Salvar a lista atualizada no AsyncStorage
+      await AsyncStorage.setItem('medicamentos', JSON.stringify(medicamentosArray));
+
+      // Navegar de volta para a tela de estoque com o novo medicamento
       navigation.navigate('Estoque', { novoMedicamento: { nome: nomeMedicamento, quantidade: quantidadeMedicamento, photoUri: photo } });
     }
   };
@@ -179,5 +196,6 @@ const styles = StyleSheet.create({
 });
 
 export default EditorProdutoScreen;
+
 
 
