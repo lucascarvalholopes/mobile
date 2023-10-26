@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, FlatList, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome'; // Importe o ícone FontAwesome
 
 function PedidoScreen() {
   const [medicamento, setMedicamento] = useState('');
   const [quantidade, setQuantidade] = useState('');
   const [pedidos, setPedidos] = useState([]);
+  const [pedidoEnviado, setPedidoEnviado] = useState(false);
+
+  const [editandoQuantidade, setEditandoQuantidade] = useState({ ativo: false, index: null });
 
   const adicionarPedido = () => {
     if (medicamento.trim() === '' || quantidade.trim() === '') {
@@ -19,6 +23,22 @@ function PedidoScreen() {
     setPedidos([...pedidos, novoPedido]);
     setMedicamento('');
     setQuantidade('');
+  }
+
+  const finalizarPedido = () => {
+    setPedidos([]);
+    setPedidoEnviado(true);
+  }
+
+  const editarQuantidade = (index) => {
+    setEditandoQuantidade({ ativo: true, index });
+  }
+
+  const salvarQuantidadeEditada = (index, novaQuantidade) => {
+    const novosPedidos = [...pedidos];
+    novosPedidos[index].quantidade = novaQuantidade;
+    setPedidos(novosPedidos);
+    setEditandoQuantidade({ ativo: false, index: null });
   }
 
   return (
@@ -39,17 +59,39 @@ function PedidoScreen() {
           keyboardType="numeric"
         />
         <Button title="Adicionar Pedido" onPress={adicionarPedido} />
+        {pedidoEnviado && <Text style={styles.pedidoEnviado}>Pedido Enviado</Text>}
       </View>
       <Text style={styles.listaTitulo}>Pedidos Atuais:</Text>
       <FlatList
         data={pedidos}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <View style={styles.itemLista}>
             <Text>{item.medicamento} - Quantidade: {item.quantidade}</Text>
+            {!editandoQuantidade.ativo && (
+              // Substituído o botão "Editar Quantidade" pelo ícone de lápis
+              <Icon
+                name="pencil" // Nome do ícone de lápis do FontAwesome
+                size={20}
+                color="blue"
+                onPress={() => editarQuantidade(index)}
+              />
+            )}
+            {editandoQuantidade.ativo && editandoQuantidade.index === index && (
+              <View style={styles.editQuantidade}>
+                <TextInput
+                  style={styles.inputQuantidade}
+                  value={item.quantidade}
+                  onChangeText={(text) => salvarQuantidadeEditada(index, text)}
+                  keyboardType="numeric"
+                />
+                <Button title="Salvar" onPress={() => salvarQuantidadeEditada(index, item.quantidade)} />
+              </View>
+            )}
           </View>
         )}
       />
+      <Button title="Finalizar Pedido" onPress={finalizarPedido} />
     </View>
   );
 }
@@ -85,8 +127,31 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  pedidoEnviado: {
+    fontSize: 18,
+    color: 'green',
+    marginTop: 10,
+  },
+  editQuantidade: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  inputQuantidade: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 5,
   },
 });
 
 export default PedidoScreen;
+
 

@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Camera } from "expo-camera";
 import { useNavigation } from '@react-navigation/native';
 
-const EditorProdutoScreen = () => {
+function EditorProdutoScreen({ route }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [cameraVisible, setCameraVisible] = useState(false);
@@ -23,7 +23,6 @@ const EditorProdutoScreen = () => {
   const handleCapture = async () => {
     if (cameraRef.current) {
       const { uri } = await cameraRef.current.takePictureAsync();
-      console.log("Photo taken:", uri);
       setPhoto(uri);
       setCameraVisible(false);
     }
@@ -31,15 +30,7 @@ const EditorProdutoScreen = () => {
 
   const adicionarMedicamento = () => {
     if (nomeMedicamento && quantidadeMedicamento) {
-      const novoMedicamento = {
-        nome: nomeMedicamento,
-        quantidade: quantidadeMedicamento,
-      };
-      setNomeMedicamento('');
-      setQuantidadeMedicamento('');
-      setPhoto(null);
-      // Use a função navigate para ir para a tela de estoque
-      navigation.navigate('EstoqueMedicamentosScreen', { medicamento: novoMedicamento });
+      navigation.navigate('Estoque', { novoMedicamento: { nome: nomeMedicamento, quantidade: quantidadeMedicamento, photoUri: photo } });
     }
   };
 
@@ -75,32 +66,30 @@ const EditorProdutoScreen = () => {
         </TouchableOpacity>
       </View>
 
-      <View>
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={cameraVisible}
-          onRequestClose={() => setCameraVisible(false)}
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={cameraVisible}
+        onRequestClose={() => setCameraVisible(false)}
+      >
+        <Camera
+          ref={cameraRef}
+          style={styles.camera}
+          type={Camera.Constants.Type.back}
+          ratio="16:9"
         >
-          <Camera
-            ref={cameraRef}
-            style={styles.camera}
-            type={Camera.Constants.Type.back}
-            ratio="16:9"
+          <TouchableOpacity
+            style={styles.captureButton}
+            onPress={() => handleCapture()}
           >
-            <TouchableOpacity
-              style={styles.captureButton}
-              onPress={() => handleCapture()}
-            >
-              <View style={styles.captureButtonInner}>
-                <View style={styles.captureButtonCircle}>
-                  <View style={styles.captureButtonCenter} />
-                </View>
+            <View style={styles.captureButtonInner}>
+              <View style={styles.captureButtonCircle}>
+                <View style={styles.captureButtonCenter} />
               </View>
-            </TouchableOpacity>
-          </Camera>
-        </Modal>
-      </View>
+            </View>
+          </TouchableOpacity>
+        </Camera>
+      </Modal>
     </View>
   );
 }
@@ -190,4 +179,5 @@ const styles = StyleSheet.create({
 });
 
 export default EditorProdutoScreen;
+
 

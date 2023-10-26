@@ -7,7 +7,7 @@ const plataforma = Platform.OS;
 function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1 }}>
-      <View style={{ flex: 1, backgroundColor: 'blue', justifyContent: "center", alignItems: "center"}}>
+      <View style={{ flex: 1, backgroundColor: 'blue', justifyContent: "center", alignItems: "center" }}>
         <Text style={styles.headerText}>MediStock</Text>
       </View>
       <View style={{ flex: 8, flexDirection: plataforma === "web" ? "row" : "column", justifyContent: "center", alignItems: "center", flexWrap: plataforma === "web" ? "wrap" : undefined, gap: 10, padding: 20 }}>
@@ -15,25 +15,16 @@ function HomeScreen({ navigation }) {
           style={styles.itemContainer}
           onPress={() => navigation.navigate('Estoque')}
         >
-          <View style={[styles.square, styles.darkGreenBackground]}>
+          <View style={[styles.square, styles.blueBackground]}>
             <Ionicons name="cube" size={64} color="white" />
             <Text style={styles.itemText}>Estoque de Medicamentos</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.itemContainer}
-          onPress={() => navigation.navigate('EditorProduto')}
-        >
-          <View style={[styles.square, styles.blueBackground]}>
-            <Ionicons name="camera" size={64} color="white" />
-            <Text style={styles.itemText}>Editor de Produto</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.itemContainer}
           onPress={() => navigation.navigate('Pedido')}
         >
-          <View style={[styles.square, styles.darkGreenBackground]}>
+          <View style={[styles.square, styles.greenBackground]}>
             <Ionicons name="cart" size={64} color="white" />
             <Text style={styles.itemText}>Pedido</Text>
           </View>
@@ -80,11 +71,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  darkGreenBackground: {
-    backgroundColor: 'darkgreen',
-  },
   blueBackground: {
     backgroundColor: 'blue',
+  },
+  greenBackground: {
+    backgroundColor: 'green',
   },
   itemText: {
     fontSize: 18,
@@ -105,3 +96,4 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
+
