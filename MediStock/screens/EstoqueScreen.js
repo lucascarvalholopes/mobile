@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image, Modal, TextInput } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';  // Importe o Feather para o novo ícone da lixeira
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -71,15 +71,20 @@ function EstoqueScreen({ route }) {
             {item.photoUri && <Image source={{ uri: item.photoUri }} style={styles.medicamentoImage} />}
             <Text>{item.nome} - Quantidade: {item.quantidade}</Text>
             <TouchableOpacity onPress={() => excluirMedicamento(item)}>
-              <MaterialIcons
-                name="delete"
+              <Feather  // Usando o Feather para o ícone da lixeira
+                name="trash-2"  // Ícone de lixeira cheia no Feather
                 size={24}
-                color="black"
+                color="black"  // Cor preta (ou a cor desejada)
                 style={styles.deleteIcon}
               />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => openEditModal(item)} style={styles.editIcon}>
-              <Text style={{ color: 'blue' }}>Editar</Text>
+              <Feather  // Usando o Feather para o ícone de edição
+                name="edit"  // Ícone de edição no Feather
+                size={24}
+                color="blue"  // Cor azul (ou a cor desejada)
+                style={styles.editIcon}
+              />
             </TouchableOpacity>
           </View>
         )}
@@ -136,14 +141,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   deleteIcon: {
-    backgroundColor: 'transparent',
-    width: 24,
-    height: 24,
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 5,
-    textAlign: 'center',
-    textAlignVertical: 'center',
+    // Remova as propriedades width, height, borderWidth, borderColor e borderRadius
   },
   editIcon: {
     backgroundColor: 'transparent',
@@ -188,3 +186,6 @@ const styles = StyleSheet.create({
 });
 
 export default EstoqueScreen;
+
+
+

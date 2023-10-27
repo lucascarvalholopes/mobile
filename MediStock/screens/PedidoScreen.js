@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, FlatList, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'; // Importe o ícone FontAwesome
+import { View, Text, TextInput, Button, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { Feather } from 'react-native-vector-icons'; // Importe o ícone Feather
 
 function PedidoScreen() {
   const [medicamento, setMedicamento] = useState('');
@@ -69,13 +69,14 @@ function PedidoScreen() {
           <View style={styles.itemLista}>
             <Text>{item.medicamento} - Quantidade: {item.quantidade}</Text>
             {!editandoQuantidade.ativo && (
-              // Substituído o botão "Editar Quantidade" pelo ícone de lápis
-              <Icon
-                name="pencil" // Nome do ícone de lápis do FontAwesome
-                size={20}
-                color="blue"
-                onPress={() => editarQuantidade(index)}
-              />
+              <TouchableOpacity onPress={() => editarQuantidade(index)} style={styles.editIcon}>
+                <Feather  // Usando o Feather para o ícone de edição
+                  name="edit"  // Ícone de edição no Feather
+                  size={24}
+                  color="blue"  // Cor azul (ou a cor desejada)
+                  style={styles.editIcon}
+                />
+              </TouchableOpacity>
             )}
             {editandoQuantidade.ativo && editandoQuantidade.index === index && (
               <View style={styles.editQuantidade}>
@@ -150,8 +151,11 @@ const styles = StyleSheet.create({
     padding: 10,
     marginRight: 5,
   },
+  editIcon: {
+    backgroundColor: 'transparent',
+    padding: 5,
+  },
 });
 
 export default PedidoScreen;
-
 
